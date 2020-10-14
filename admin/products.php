@@ -158,7 +158,7 @@ include('sidebar.php'); ?>
                                                         $rows = mysqli_num_rows($qry);
                                                         if ($rows>0) {
                                                             $categ = mysqli_fetch_assoc($qry);
-                                                            echo $categ['name'];
+                                                            echo ucfirst($categ['name']);
                                                         }
                                                     ?>
                                                 </td>
