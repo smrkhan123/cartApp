@@ -1,6 +1,6 @@
 <?php
 
-$base_url = "http://localhost/training/PHP/";
+$base_url = "http://localhost/app/admin/";
 
 
 $servername = "localhost";
