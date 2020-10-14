@@ -138,43 +138,43 @@ include('sidebar.php'); ?>
                          
                             <tbody id="tableBody">
                                 <?php 
-                                    $fetch = "SELECT * FROM products";
-                                    $run = mysqli_query($conn, $fetch);
-                                    $rows = mysqli_num_rows($run);
-                                    if($rows>0){
-                                        while($data = mysqli_fetch_assoc($run)){
+                                $fetch = "SELECT * FROM products";
+                                $run = mysqli_query($conn, $fetch);
+                                $rows = mysqli_num_rows($run);
+                                if($rows>0){
+                                    while($data = mysqli_fetch_assoc($run)){
                                             
-                                            ?>
+                                        ?>
                                             
-                                            <tr>
-                                                <td><input type="checkbox" /></td>
-                                                <td><?php echo $data['id']; ?></td>
-                                                <td><?php echo $data['name']; ?></td>
-                                                <td><?php echo $data['price']; ?></td>
-                                                <td>
-                                                    <?php 
-                                                        $cat = "SELECT name FROM categories WHERE category_id = '".$data['category_id']."'";
-                                                        $qry= mysqli_query($conn, $cat);
-                                                        $rows = mysqli_num_rows($qry);
-                                                        if ($rows>0) {
-                                                            $categ = mysqli_fetch_assoc($qry);
-                                                            echo $categ['name'];
-                                                        }
-                                                    ?>
-                                                </td>
-                                                <td><a href="resources/uploads/<?php echo $data['image']; ?>""><img src="resources/uploads/<?php echo $data['image']; ?>" alt="" width="50" height="50"></a></td>
-                                                <td><?php echo $data['short_description']; ?></td>
-                                                <td><?php echo substr( $data['long_description'],0,30 )."..."; ?></td>
-                                                <td>
-                                                    <!-- Icons -->
-                                                    <a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-                                                    <a href="#"  title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a> 
-                                                </td>
-                                            </tr>
-                                            
-                                            <?php
-                                        }
+                                        <tr>
+                                            <td><input type="checkbox" /></td>
+                                            <td><?php echo $data['id']; ?></td>
+                                            <td><?php echo $data['name']; ?></td>
+                                            <td><?php echo $data['price']; ?></td>
+                                            <td>
+                                                <?php 
+                                                $cat = "SELECT name FROM categories WHERE category_id = '".$data['category_id']."'";
+                                                $qry= mysqli_query($conn, $cat);
+                                                $rows = mysqli_num_rows($qry);
+                                                if ($rows>0) {
+                                                    $categ = mysqli_fetch_assoc($qry);
+                                                    echo $categ['name'];
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><a href="resources/uploads/<?php echo $data['image']; ?>""><img src="resources/uploads/<?php echo $data['image']; ?>" alt="" width="50" height="50"></a></td>
+                                            <td><?php echo $data['short_description']; ?></td>
+                                            <td><?php echo substr( $data['long_description'],0,30 )."..."; ?></td>
+                                            <td>
+                                                <!-- Icons -->
+                                                <!-- <a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
+                                                <a href="#"  title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>  -->
+                                            </td>
+                                        </tr>
+                                        
+                                        <?php
                                     }
+                                }
                                 ?>
                             </tbody>
                             
@@ -210,8 +210,8 @@ include('sidebar.php'); ?>
                                         $qry ="SELECT * FROM categories";
                                         $run = mysqli_query($conn, $qry);
                                         $rows = mysqli_num_rows($run);
-                                        if($rows>0){
-                                            while($data = mysqli_fetch_assoc($run)){
+                                        if ($rows>0) {
+                                            while ( $data = mysqli_fetch_assoc($run) ) {
                                                 ?>
                                                 <option value="<?php echo $data['category_id']; ?>"><?php echo ucfirst($data['name']); ?></option>
                                                 <?php
@@ -229,7 +229,7 @@ include('sidebar.php'); ?>
                                     $run = mysqli_query($conn, $qry);
                                     $rows = mysqli_num_rows($run);
                                     if ($rows>0) {
-                                        while( $data = mysqli_fetch_assoc($run) ) {
+                                        while ( $data = mysqli_fetch_assoc($run) ) {
                                             ?>
                                             <input type="checkbox" name="tags[]" value="<?php echo $data['id']; ?>" /><?php echo ucfirst($data['name']); ?>
                                             <?php
@@ -244,9 +244,9 @@ include('sidebar.php'); ?>
                                         <br />
                                 </p>
                                 <p>
-									<label>Product Long Description</label>
-									<textarea class="text-input textarea wysiwyg" id="textarea" name="plong" cols="50" rows="10" required></textarea>
-								</p>
+                                    <label>Product Long Description</label>
+                                    <textarea class="text-input textarea wysiwyg" id="textarea" name="plong" cols="50" rows="10" required></textarea>
+                                </p>
                                 
                                 <p>
                                     <input class="button" type="submit" name="submit" value="Submit" />
@@ -269,7 +269,7 @@ include('sidebar.php'); ?>
             
             <!-- Start Notifications -->
             
-<!-- 			<div class="notification attention png_bg">
+            <!-- <div class="notification attention png_bg">
                 <a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
                 <div>
                     Attention notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero. 
