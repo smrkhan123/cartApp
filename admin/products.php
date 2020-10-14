@@ -167,8 +167,8 @@ include('sidebar.php'); ?>
                                                 <td><?php echo substr( $data['long_description'],0,30 )."..."; ?></td>
                                                 <td>
                                                     <!-- Icons -->
-                                                    <a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-                                                    <a href="#"  title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a> 
+                                                    <!--<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
+                                                    <a href="#"  title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a> -->
                                                 </td>
                                             </tr>
                                             
