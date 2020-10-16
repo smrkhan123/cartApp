@@ -4,10 +4,8 @@ session_start();
 if (!isset($_SESSION['id'])) {
     header("location:login.php");
 } else {
-    $username = $_SESSION['username'];
-   
+    $username = $_SESSION['username'];  
 }
-
 if (isset($_POST['submit'])) {
     $pname = $_POST['pname'];
     $pprice = $_POST['pprice'];
@@ -25,7 +23,6 @@ if (isset($_POST['submit'])) {
     if (!$run) {
         echo "Some error occured!".mysqli_error($conn);
     } else {
-        $tagss = "";
         if (!empty($_POST['tags'])) {
             $tag_id = "SELECT * FROM tags";
             $id_run = mysqli_query($conn, $tag_id);
@@ -37,16 +34,51 @@ if (isset($_POST['submit'])) {
                             $tag_query = "INSERT INTO products_tags(`product_id`,`tag_id`) VALUES('".$pid."','".$tag."')";
                             $runn = mysqli_query($conn, $tag_query);
                             if (!$runn) {
-                                echo "Some error occured!".mysqli_error($conn);
+                                echo "Please select atleast one tag ".mysqli_error($conn);
                             }
                         }
                     }
                 }
             }
         }
-    }
-    
+        if(!empty($_POST['colors'])){
+            foreach ($_POST['colors'] as $color) {
+                if($_POST[$color]==''){
+                    $_POST[$color] = 1;
+                }
+                $insert_color = "INSERT INTO colors(`product_id`,`color`,`quantity`) VALUES('".$pid."','".$color."','".$_POST[$color]."')";
+                $color_qry = mysqli_query($conn, $insert_color);
+                if(!$color_qry){
+                    echo "Some error occured!".mysqli_error($conn);
+                }
+            }
+        }
+    }   
 }
+
+
+
+
+
+//deleting item from the table
+
+
+if(isset($_POST['delete'])){
+    $id = $_POST['id'];
+    $delete = "DELETE FROM products WHERE id = '".$id."'";
+    $qry = mysqli_query($conn, $delete);
+    if(!$qry){
+        echo "Some error occured! ".mysqli_error($conn);
+    }
+    else{
+        $delete_tags = "DELETE FROM products_tags WHERE product_id = '".$id."'";
+        $run_tags = mysqli_query($conn, $delete_tags);
+        $delete_colors = "DELETE FROM colors WHERE product_id = '".$id."'";
+        $run_colors = mysqli_query($conn, $delete_colors);
+        header("location:products.php");
+    }
+}
+
 
 
 
@@ -76,7 +108,8 @@ include('sidebar.php'); ?>
                     <h3>Content box</h3>
                     
                     <ul class="content-box-tabs">
-                        <li><a href="#tab1" class="default-tab">Manage</a></li> <!-- href must be unique and match the id of target div -->
+                        <li><a href="#tab1" class="default-tab">
+                        Manage</a></li> <!-- href must be unique and match the id of target div -->
                         <li><a href="#tab2">Add</a></li>
                     </ul>
                     
@@ -84,7 +117,7 @@ include('sidebar.php'); ?>
                     
                 </div> <!-- End .content-box-header -->
                 
-                <div class="content-box-content">
+                <div class="content-box-content" id="dbContent">
                     
                     <div class="tab-content default-tab" id="tab1"> <!-- This is the target div. id must match the href of this div's tab -->
                         
@@ -141,8 +174,8 @@ include('sidebar.php'); ?>
                                 $fetch = "SELECT * FROM products";
                                 $run = mysqli_query($conn, $fetch);
                                 $rows = mysqli_num_rows($run);
-                                if($rows>0){
-                                    while($data = mysqli_fetch_assoc($run)){
+                                if ($rows>0) {
+                                    while ($data = mysqli_fetch_assoc($run)) {
                                             
                                         ?>
                                             
@@ -158,17 +191,20 @@ include('sidebar.php'); ?>
                                                 $rows = mysqli_num_rows($qry);
                                                 if ($rows>0) {
                                                     $categ = mysqli_fetch_assoc($qry);
-                                                    echo $categ['name'];
+                                                    echo ucfirst($categ['name']);
                                                 }
                                                 ?>
                                             </td>
                                             <td><a href="resources/uploads/<?php echo $data['image']; ?>""><img src="resources/uploads/<?php echo $data['image']; ?>" alt="" width="50" height="50"></a></td>
                                             <td><?php echo $data['short_description']; ?></td>
-                                            <td><?php echo substr( $data['long_description'],0,30 )."..."; ?></td>
+                                            <td><?php echo substr($data['long_description'], 0, 30)."..."; ?></td>
                                             <td>
                                                 <!-- Icons -->
-                                                <!-- <a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-                                                <a href="#"  title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>  -->
+                                                <a href="update_prod.php?id=<?php echo $data['id']; ?>"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
+                                                <form action="" method="POST">
+                                                    <input type="hidden" name="id" value="<?php echo $data["id"]; ?>">
+                                                    <button type="submit" name="delete" style="border:0px; background-color: transparent;"><img src="resources/images/icons/cross.png" alt="Delete" /></button>
+                                                </form> 
                                             </td>
                                         </tr>
                                         
@@ -176,11 +212,13 @@ include('sidebar.php'); ?>
                                     }
                                 }
                                 ?>
+                                
                             </tbody>
+
                             
-                        </table>
+                        </table> 
+                        
                     </div> <!-- End #tab1 -->
-                    
                     <div class="tab-content" id="tab2">
                     
                         <form action="" method="post" enctype="multipart/form-data">
@@ -211,7 +249,7 @@ include('sidebar.php'); ?>
                                         $run = mysqli_query($conn, $qry);
                                         $rows = mysqli_num_rows($run);
                                         if ($rows>0) {
-                                            while ( $data = mysqli_fetch_assoc($run) ) {
+                                            while ($data = mysqli_fetch_assoc($run)) {
                                                 ?>
                                                 <option value="<?php echo $data['category_id']; ?>"><?php echo ucfirst($data['name']); ?></option>
                                                 <?php
@@ -221,7 +259,6 @@ include('sidebar.php'); ?>
                                         ?>
                                     </select> 
                                 </p>
-
                                 <p>
                                     <label>Tags</label>
                                     <?php 
@@ -237,6 +274,51 @@ include('sidebar.php'); ?>
                                     }
                                     
                                     ?>
+                                </p>
+                                <p>
+                                    <table style="width: 70%;">
+                                        <tr>
+                                            <th><label>Colors</label></th>
+                                            <th><label>Quantity</label></th>
+                                            <th><label>Colors</label></th>
+                                            <th><label>Quantity</label></th>
+                                            <th><label>Colors</label></th>
+                                            <th><label>Quantity</label></th>
+                                            <th><label>Colors</label></th>
+                                            <th><label>Quantity</label></th>
+                                        </tr>
+                                        <?php 
+                                            $colors = "SELECT * FROM allcolors";
+                                            $run = mysqli_query($conn, $colors);
+                                            $rows = mysqli_num_rows($run);
+                                            $i=0;
+                                            if($rows>0){
+                                               
+                                                while($data = mysqli_fetch_assoc($run)){
+                                                    if($i%4 == 0){
+                                                        ?>
+                                                        <tr>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                    <td>
+                                                        <input type="checkbox" name="colors[]" value="<?php echo $data['color']?>" /> <?php echo $data['color']; ?>
+                                                    </td>
+                                                     <td>
+                                                    <input type="number" min="1" name="<?php echo $data['color']?>" style="width: 40px;">
+                                                    </td>
+                                                    <?php
+                                                    $i++;
+                                                    if($i != 0 && $i%4 == 0){
+                                                        ?>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        ?>
+                                    </table>
                                 </p>
                                 <p>
                                     <label>Product Short Description</label>
@@ -298,5 +380,8 @@ include('sidebar.php'); ?>
             </div> -->
             
             <!-- End Notifications -->
-            
+
+            <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
             <?php include('footer.php'); ?>
+
+
