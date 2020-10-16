@@ -24,6 +24,7 @@ if (isset($_POST['submit'])) {
         echo "Some error occured!".mysqli_error($conn);
     } else {
         if (!empty($_POST['tags'])) {
+<<<<<<< HEAD
             $tag_id = "SELECT * FROM tags";
             $id_run = mysqli_query($conn, $tag_id);
             $rows = mysqli_num_rows($id_run);
@@ -77,6 +78,17 @@ if(isset($_POST['delete'])){
         $run_colors = mysqli_query($conn, $delete_colors);
         header("location:products.php");
     }
+=======
+            $a= implode(",", $_POST['tags']);
+            $pid = mysqli_insert_id($conn);
+            $tag_query = "INSERT INTO products_tags(`product_id`,`tag_id`) VALUES('".$pid."','".$a."')";
+            $runn = mysqli_query($conn, $tag_query);
+            if (!$runn) {
+                echo "Some error occured!".mysqli_error($conn);
+            }
+        }
+    }    
+>>>>>>> dcec1411fbcf7c95b91773c4b67ad2a744561d65
 }
 
 
@@ -200,11 +212,16 @@ include('sidebar.php'); ?>
                                             <td><?php echo substr($data['long_description'], 0, 30)."..."; ?></td>
                                             <td>
                                                 <!-- Icons -->
+<<<<<<< HEAD
                                                 <a href="update_prod.php?id=<?php echo $data['id']; ?>"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
                                                 <form action="" method="POST">
                                                     <input type="hidden" name="id" value="<?php echo $data["id"]; ?>">
                                                     <button type="submit" name="delete" style="border:0px; background-color: transparent;"><img src="resources/images/icons/cross.png" alt="Delete" /></button>
                                                 </form> 
+=======
+                                                <!-- <a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
+                                                <a href="#"  title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>  -->
+>>>>>>> dcec1411fbcf7c95b91773c4b67ad2a744561d65
                                             </td>
                                         </tr>
                                         
@@ -380,8 +397,13 @@ include('sidebar.php'); ?>
             </div> -->
             
             <!-- End Notifications -->
+<<<<<<< HEAD
 
             <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
             <?php include('footer.php'); ?>
 
 
+=======
+            
+            <?php include('footer.php'); ?>
+>>>>>>> dcec1411fbcf7c95b91773c4b67ad2a744561d65
