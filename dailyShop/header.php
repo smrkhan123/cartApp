@@ -1,10 +1,15 @@
+<?php 
+include('../admin/config.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Daily Shop | 404</title>
+    <title>Daily Shop | Product</title>
     
     <!-- Font awesome -->
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -37,10 +42,11 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  
 
   </head>
-  <body>   
+  <!-- !Important notice -->
+  <!-- Only for product page body tag have to added .productPage class -->
+  <body class="productPage">  
    <!-- wpf loader Two -->
     <div id="wpf-loader-two">          
       <div class="wpf-loader-two-inner">
@@ -55,7 +61,7 @@
 
   <!-- Start header section -->
   <header id="aa-header">
-   <!-- start header top  -->
+    <!-- start header top  -->
     <div class="aa-header-top">
       <div class="container">
         <div class="row">
@@ -133,38 +139,49 @@
               </div>
               <!-- / logo  -->
                <!-- cart box -->
+              <?php
+                $select = "SELECT * FROM cart";
+                $run = mysqli_query($conn, $select);
+                $rows = mysqli_num_rows($run);
+              ?>
               <div class="aa-cartbox">
                 <a class="aa-cart-link" href="#">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">SHOPPING CART</span>
-                  <span class="aa-cart-notify">2</span>
+                  <span class="aa-cart-notify"><?php echo $rows; ?></span>
                 </a>
                 <div class="aa-cartbox-summary">
                   <ul>
-                    <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-2.jpg" alt="img"></a>
-                      <div class="aa-cartbox-info">
-                        <h4><a href="#">Product Name</a></h4>
-                        <p>1 x $250</p>
-                      </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                    </li>
-                    <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-1.jpg" alt="img"></a>
-                      <div class="aa-cartbox-info">
-                        <h4><a href="#">Product Name</a></h4>
-                        <p>1 x $250</p>
-                      </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                    </li>                    
-                    <li>
-                      <span class="aa-cartbox-total-title">
-                        Total
-                      </span>
-                      <span class="aa-cartbox-total-price">
-                        $500
-                      </span>
-                    </li>
+                    <?php 
+                      if($rows>0){
+                        $total = 0;
+                        while($data = mysqli_fetch_assoc($run)){
+                          ?>
+                          
+                             <li>
+                              <a class="aa-cartbox-img" href="#"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="img"></a>
+                              <div class="aa-cartbox-info">
+                                <h4><a href="#"><?php echo $data['name']; ?></a></h4>
+                                <p><?php echo $data['quantity']; ?> x $<?php echo $data['price']; ?></p>
+                              </div>
+                              <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+                            </li>
+
+                          <?php
+                          $total = $total + ($data['quantity']*$data['price']);
+                        }
+                        ?>
+                          <li>
+                            <span class="aa-cartbox-total-title">
+                              Total
+                            </span>
+                            <span class="aa-cartbox-total-price">
+                              $<?php echo $total; ?>
+                            </span>
+                          </li>
+                        <?php
+                      } 
+                    ?>
                   </ul>
                   <a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a>
                 </div>
@@ -317,4 +334,4 @@
       </div>
     </div>
   </section>
-  <!-- / menu -->  
+  <!-- / menu --> 
