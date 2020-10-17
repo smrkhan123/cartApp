@@ -74,7 +74,7 @@
                         <li>
                           <figure>
                             <a class="aa-product-img" href="product-detail.php?id=<?php echo $data['id']; ?>"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="" width="265" height="300"></a>
-                            <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                            <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                             <figcaption>
                               <h4 class="aa-product-title"><a href="#"><?php echo $data['name']; ?></a></h4>
                               <span class="aa-product-price">$<?php echo $data['price']; ?>.00</span>
@@ -93,6 +93,19 @@
                     }
                 ?>                                         
               </ul>
+              <script>
+                function addCart(id){
+                  
+                  $.ajax({
+                    url : 'ajax.php',
+                    method: 'POST',
+                    data : {id: id, action: 'addtoCart'},
+                    dataType : "json"
+                  }).done(function(msg){
+                    $(".aa-cart-notify").html(msg); 
+                  });
+                }
+              </script>
               <!-- quick view modal --> 
               <script>
                 function view(id){

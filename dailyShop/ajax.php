@@ -96,7 +96,7 @@ if($action == 'product'){
                               </p>
                             </div>
                             <div class="aa-prod-view-bottom">
-                              <a href="#" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                              <button class="aa-add-to-cart-btn" onclick="addCart('.$id.')"><span class="fa fa-shopping-cart"></span>Add To Cart</button>
                               <a href="product-detail.php?id='.$id.'" class="aa-add-to-cart-btn">View Details</a>
                             </div>
                           </div>
@@ -382,17 +382,17 @@ elseif($action == 'addtoCart'){
             }
     } 
   }
-  $cart = array();
-  $finalQuery = "SELECT * FROM cart";
-  $run = mysqli_query($conn, $finalQuery);
-  if(mysqli_num_rows($run)>0){
-    $i = 0;
-    while($data = mysqli_fetch_assoc($run)){
-      $cart[i] = $data;
-      $i++;
-    }
-  }
-  echo json_encode($cart);
+  // $cart = array();
+  // $finalQuery = "SELECT * FROM cart";
+  // $run = mysqli_query($conn, $finalQuery);
+  // if(mysqli_num_rows($run)>0){
+  //   $i = 0;
+  //   while($data = mysqli_fetch_assoc($run)){
+  //     $cart[i] = $data;
+  //     $i++;
+  //   }
+  // }
+  echo $allrows;
 }
 ?>
                                      

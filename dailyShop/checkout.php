@@ -1,4 +1,9 @@
-<?php include('header.php'); ?> 
+<?php 
+
+include('header.php'); 
+include('../admin/config.php'); 
+
+?> 
  
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
@@ -288,23 +293,27 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>T-Shirt <strong> x  1</strong></td>
-                          <td>$150</td>
-                        </tr>
-                        <tr>
-                          <td>Polo T-Shirt <strong> x  1</strong></td>
-                          <td>$250</td>
-                        </tr>
-                        <tr>
-                          <td>Shoes <strong> x  1</strong></td>
-                          <td>$350</td>
-                        </tr>
+                        <?php 
+                          $total = 0;
+                          $select = "SELECT * FROM cart";
+                          $run = mysqli_query($conn, $select);
+                          if(mysqli_num_rows($run)>0){
+                            while($data = mysqli_fetch_assoc($run)){
+                              $total = $total + ($data['price'] * $data['quantity']);
+                              ?>
+                                <tr>
+                                  <td><?php echo $data['name']; ?> <strong> x  <?php echo $data['quantity']; ?></strong></td>
+                                  <td>$<?php echo $data['price']; ?></td>
+                                </tr>
+                              <?php
+                            }
+                          }
+                        ?>
                       </tbody>
                       <tfoot>
                         <tr>
                           <th>Subtotal</th>
-                          <td>$750</td>
+                          <td>$<?php echo $total; ?></td>
                         </tr>
                          <tr>
                           <th>Tax</th>
@@ -312,7 +321,7 @@
                         </tr>
                          <tr>
                           <th>Total</th>
-                          <td>$785</td>
+                          <td>$<?php echo $total+35; ?></td>
                         </tr>
                       </tfoot>
                     </table>

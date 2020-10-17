@@ -124,15 +124,7 @@
                           data : {id: id, action: 'addtoCart'},
                           dataType : "json"
                         }).done(function(msg){
-                          var i;
-                          var totalPrice = 0;
-                          var html = '<a class="aa-cart-link" href="#"><span class="fa fa-shopping-basket"></span><span class="aa-cart-title">SHOPPING CART</span><span class="aa-cart-notify">'+ msg.length +'</span></a><div class="aa-cartbox-summary"><ul>';
-                          for(i=0; i<msg.length; i++){
-                            html += '<li><a class="aa-cartbox-img" href="#"><img src="../admin/resources/uploads/'+msg["image"]+'" alt="img"></a><div class="aa-cartbox-info"><h4><a href="#">'+msg["name"]+'</a></h4><p>'+msg["quantity"]+' x $'+msg["price"]+'</p></div><a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a></li>';
-                            totalPrice = totalPrice + (msg['quantity']*msg['price']);
-                          }
-                          html += '<li><span class="aa-cartbox-total-title">  Total</span><span class="aa-cartbox-total-price">' + $totalPrice + '</span></li></ul><a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a></div>';
-                          $(".aa-cartbox-summary").html(html); 
+                          $(".aa-cart-notify").html(msg); 
                         });
                       }
                     </script>

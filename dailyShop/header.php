@@ -145,7 +145,7 @@ include('../admin/config.php');
                 $rows = mysqli_num_rows($run);
               ?>
               <div class="aa-cartbox">
-                <a class="aa-cart-link" href="#">
+                <a class="aa-cart-link" href="cart.php">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">SHOPPING CART</span>
                   <span class="aa-cart-notify"><?php echo $rows; ?></span>
@@ -183,7 +183,7 @@ include('../admin/config.php');
                       } 
                     ?>
                   </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.php">Checkout</a>
                 </div>
               </div>
               <!-- / cart box -->

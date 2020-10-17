@@ -1,4 +1,31 @@
-<?php include('header.php'); ?>
+<?php 
+
+
+include('header.php'); 
+include('../admin/config.php'); 
+
+if(isset($_POST['update'])){
+  $quantity = $_POST['quantity'];
+  $id = $_POST['id'];
+  $select = "SELECT * FROM cart";
+  $runCheck = mysqli_query($conn, $select);
+  echo mysqli_num_rows($runCheck);
+  // if(mysqli_num_rows($runCheck)>0){
+  //   while($cartRow = mysqli_fetch_assoc($runCheck)){
+  //     if($cartRow['id'] == $id){
+  //       $pid = $cartRow['product_id'];
+  //       $name = $cartRow['name'];
+  //       $price = $cartRow['price'];
+  //       $image = $cartRow['image'];
+  //       $insertItem = "UPDATE cart SET `product_id` = '".$pid."', `name` = '".$name."', `price` = '".$price."', `image` = '".$image."', `quantity` = '".$quantity."' WHERE id = '".$id."'";
+  //         $qry = mysqli_query($conn, $insertItem);
+  //         if(!$qry){
+  //           echo "Some error occured! ".mysqli_error($conn);
+  //         }
+  //     }
+  //   }
+}
+?>
  
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
@@ -24,13 +51,13 @@
        <div class="col-md-12">
          <div class="cart-view-area">
            <div class="cart-view-table">
-             <form action="">
+             <form action="" method="POST">
                <div class="table-responsive">
                   <table class="table">
                     <thead>
                       <tr>
-                        <th></th>
-                        <th></th>
+                        <th>Delete</th>
+                        <th>Image</th>
                         <th>Product</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -38,37 +65,34 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="img/man/polo-shirt-1.png" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$250</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$250</td>
-                      </tr>
-                      <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="img/man/polo-shirt-2.png" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$150</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$150</td>
-                      </tr>
-                      <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="img/man/polo-shirt-3.png" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$50</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$50</td>
-                      </tr>
+                      <?php 
+                          $total = 0;
+                          $select = "SELECT * FROM cart";
+                          $run = mysqli_query($conn, $select);
+                          if(mysqli_num_rows($run)>0){
+                            while($data = mysqli_fetch_assoc($run)){
+                              $total = $total + ($data['price'] * $data['quantity']);
+                              ?>
+                                <tr>
+                                  <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
+                                  <td><a href="#"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="img"></a></td>
+                                  <td><a class="aa-cart-title" href="#"><?php echo $data['name']; ?></a></td>
+                                  <td>$<?php echo $data['price']; ?></td>
+                                  <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+                                  <td><input class="aa-cart-quantity" type="number" name="quantity" value="<?php echo $data['quantity']?>" min="1"> </td>
+                                  <td>$<?php echo ($data['quantity']* $data['price']); ?></td>
+                                </tr>
+                              <?php
+                            }
+                          }
+                        ?>
                       <tr>
                         <td colspan="6" class="aa-cart-view-bottom">
-                          <div class="aa-cart-coupon">
+                          <!-- <div class="aa-cart-coupon">
                             <input class="aa-coupon-code" type="text" placeholder="Coupon">
                             <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
-                          </div>
-                          <input class="aa-cart-view-btn" type="submit" value="Update Cart">
+                          </div> -->
+                          <input class="aa-cart-view-btn" type="submit" name="update" value="Update Cart">
                         </td>
                       </tr>
                       </tbody>
@@ -82,15 +106,15 @@
                  <tbody>
                    <tr>
                      <th>Subtotal</th>
-                     <td>$450</td>
+                     <td>$<?php echo $total; ?></td>
                    </tr>
                    <tr>
                      <th>Total</th>
-                     <td>$450</td>
+                     <td>$<?php echo $total; ?></td>
                    </tr>
                  </tbody>
                </table>
-               <a href="#" class="aa-cart-view-btn">Proced to Checkout</a>
+               <a href="checkout.php" class="aa-cart-view-btn">Proced to Checkout</a>
              </div>
            </div>
          </div>
