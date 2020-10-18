@@ -81,7 +81,7 @@ if($action == 'product'){
                               <a href="#">XL</a>
                             </div>-->
                             <div class="aa-prod-quantity">
-                              <form action="">
+                              <!--<form action="">
                                 <select name="" id="">
                                   <option value="0" selected="1">1</option>
                                   <option value="1">2</option>
@@ -90,7 +90,7 @@ if($action == 'product'){
                                   <option value="4">5</option>
                                   <option value="5">6</option>
                                 </select>
-                              </form>
+                              </form>-->
                               <p class="aa-prod-category">
                                 Category: <a href="#"><strong>'.ucfirst($categ).'</strong></a>
                               </p>
@@ -382,17 +382,119 @@ elseif($action == 'addtoCart'){
             }
     } 
   }
-  // $cart = array();
-  // $finalQuery = "SELECT * FROM cart";
-  // $run = mysqli_query($conn, $finalQuery);
-  // if(mysqli_num_rows($run)>0){
-  //   $i = 0;
-  //   while($data = mysqli_fetch_assoc($run)){
-  //     $cart[i] = $data;
-  //     $i++;
-  //   }
-  // }
-  echo $allrows;
+  /*$cart = array();*/
+  $finalQuery = "SELECT * FROM cart";
+  $run = mysqli_query($conn, $finalQuery);
+  $rows = mysqli_num_rows($run);
+  $html = '<a class="aa-cart-link" href="cart.php">
+              <span class="fa fa-shopping-basket"></span>
+              <span class="aa-cart-title">SHOPPING CART</span>
+              <span class="aa-cart-notify">'. $rows .'</span>
+          </a>
+          <div class="aa-cartbox-summary">
+            <ul>';
+  if(mysqli_num_rows($run)>0){
+    $i = 0;
+    $total = 0;
+    while($data = mysqli_fetch_assoc($run)){
+      $total = $total + ($data['quantity']*$data['price']);
+          $html .='<li>
+                <a class="aa-cartbox-img" href="#"><img src="../admin/resources/uploads/'.$data["image"].'" alt="img"></a>
+                <div class="aa-cartbox-info">
+                  <h4><a href="#">'.$data["name"].'</a></h4>
+                  <p>'.$data["quantity"].' x $'.$data["price"].'</p>
+                </div>
+                <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+              </li>';
+         }
+         $html .= '<li>
+                  <span class="aa-cartbox-total-title">
+                    Total
+                  </span>
+                  <span class="aa-cartbox-total-price">'.$total.'</span>
+                </li>    
+        </ul>
+        <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.php">Checkout</a>
+      </div>';
+  echo $html;
+  }
+}
+
+
+elseif($action == "deletecart"){
+  $id = $_POST['id'];
+  $delete = "DELETE FROM cart WHERE id = '".$id."'";
+  $run = mysqli_query($conn, $delete);
+  if($run == true){
+    $html = '
+             <form action="" method="POST">
+               <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Delete</th>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody> ';
+
+    $select = "SELECT * FROM cart";
+    $qry = mysqli_query($conn, $select);
+    if(mysqli_num_rows($qry)>0){
+      $total = 0;
+      while($data = mysqli_fetch_assoc($qry)){
+        $total = $total + ($data['price'] * $data['quantity']);
+        $html .= ' <tr>
+                    <td><a class="remove" href="#" onclick = "deleteCart('.$data["id"].')"><fa class="fa fa-close"></fa></a></td>
+                    <td><a href="#"><img src="../admin/resources/uploads/'.$data["image"].'" alt="img"></a></td>
+                    <td><a class="aa-cart-title" href="#">'.$data["name"].'</a></td>
+                    <td>$'.$data["price"].'</td>
+                    <form action="" method="POST">
+                      <input type="hidden" name="id" value="'.$data["id"].'">
+                      <td><input class="aa-cart-quantity" type="number" name="quantity" value="'.$data["quantity"].'" min="1"> <button type="submit" name="update" style="background-color: transparent; border:0px;"><img src="../admin/resources/images/icons/pencil.png" alt="Edit" style="width: 20px; height: 20px;"  /></button>
+                    </form>
+                    <td>$'.$data["quantity"]*$data["price"].'</td>
+                  </tr> ';
+
+      }
+
+      $html .= ' <tr>
+                        <td colspan="6" class="aa-cart-view-bottom">
+                          <!-- <div class="aa-cart-coupon">
+                            <input class="aa-coupon-code" type="text" placeholder="Coupon">
+                            <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
+                          </div> -->
+                          <!-- <input class="aa-cart-view-btn" type="submit" name="update" value="Update Cart"> -->
+                        </td>
+                      </tr>
+                      </tbody>
+                  </table>
+                </div>
+             </form>
+             <!-- Cart Total view -->
+             <div class="cart-view-total">
+               <h4>Cart Totals</h4>
+               <table class="aa-totals-table">
+                 <tbody>
+                   <tr>
+                     <th>Subtotal</th>
+                     <td>$'.$total.'</td>
+                   </tr>
+                   <tr>
+                     <th>Total</th>
+                     <td>$'.$total.'</td>
+                   </tr>
+                 </tbody>
+               </table>
+               <a href="checkout.php" class="aa-cart-view-btn">Proced to Checkout</a>
+             </div> ';
+    }
+    echo $html;
+  }
 }
 ?>
                                      

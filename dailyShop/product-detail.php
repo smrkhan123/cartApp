@@ -89,13 +89,13 @@
                     </div>
                     <div class="aa-prod-quantity">
                       <!-- <form action=""> -->
-                        <select id="" name="quantity">
+                        <!-- <select id="" name="quantity">
                           <option value="1" selected="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
-                        </select>
+                        </select> -->
                       <!-- </form> -->
                       <p class="aa-prod-category">
                         Category: <?php
@@ -121,10 +121,9 @@
                         $.ajax({
                           url : 'ajax.php',
                           method: 'POST',
-                          data : {id: id, action: 'addtoCart'},
-                          dataType : "json"
+                          data : {id: id, action: 'addtoCart'}
                         }).done(function(msg){
-                          $(".aa-cart-notify").html(msg); 
+                          $(".aa-cartbox").html(msg); 
                         });
                       }
                     </script>

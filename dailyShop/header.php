@@ -164,7 +164,7 @@ include('../admin/config.php');
                                 <h4><a href="#"><?php echo $data['name']; ?></a></h4>
                                 <p><?php echo $data['quantity']; ?> x $<?php echo $data['price']; ?></p>
                               </div>
-                              <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+                              <a class="aa-remove-product" href="#" style="display: none;"><span class="fa fa-times"></span></a>
                             </li>
 
                           <?php

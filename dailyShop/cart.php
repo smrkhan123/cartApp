@@ -5,25 +5,26 @@ include('header.php');
 include('../admin/config.php'); 
 
 if(isset($_POST['update'])){
-  $quantity = $_POST['quantity'];
   $id = $_POST['id'];
+  $quantity = $_POST['quantity'];
   $select = "SELECT * FROM cart";
   $runCheck = mysqli_query($conn, $select);
-  echo mysqli_num_rows($runCheck);
-  // if(mysqli_num_rows($runCheck)>0){
-  //   while($cartRow = mysqli_fetch_assoc($runCheck)){
-  //     if($cartRow['id'] == $id){
-  //       $pid = $cartRow['product_id'];
-  //       $name = $cartRow['name'];
-  //       $price = $cartRow['price'];
-  //       $image = $cartRow['image'];
-  //       $insertItem = "UPDATE cart SET `product_id` = '".$pid."', `name` = '".$name."', `price` = '".$price."', `image` = '".$image."', `quantity` = '".$quantity."' WHERE id = '".$id."'";
-  //         $qry = mysqli_query($conn, $insertItem);
-  //         if(!$qry){
-  //           echo "Some error occured! ".mysqli_error($conn);
-  //         }
-  //     }
-  //   }
+  if(mysqli_num_rows($runCheck)>0){
+    while($cartRow = mysqli_fetch_assoc($runCheck)){
+      if($cartRow['id'] == $id){
+        $pid = $cartRow['product_id'];
+        $name = $cartRow['name'];
+        $price = $cartRow['price'];
+        $image = $cartRow['image'];
+        $insertItem = "UPDATE cart SET `product_id` = '".$pid."', `name` = '".$name."', `price` = '".$price."', `image` = '".$image."', `quantity` = '".$quantity."' WHERE id = '".$id."'";
+        $qry = mysqli_query($conn, $insertItem);
+        if(!$qry){
+          echo "Some error occured! ".mysqli_error($conn);
+        }
+      }
+            
+    }
+  }
 }
 ?>
  
@@ -64,7 +65,7 @@ if(isset($_POST['update'])){
                         <th>Total</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="ajax_value">
                       <?php 
                           $total = 0;
                           $select = "SELECT * FROM cart";
@@ -74,12 +75,14 @@ if(isset($_POST['update'])){
                               $total = $total + ($data['price'] * $data['quantity']);
                               ?>
                                 <tr>
-                                  <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
+                                  <td><a class="remove" href="#" onclick = "deleteCart(<?php echo $data['id']; ?>)"><fa class="fa fa-close"></fa></a></td>
                                   <td><a href="#"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="img"></a></td>
                                   <td><a class="aa-cart-title" href="#"><?php echo $data['name']; ?></a></td>
                                   <td>$<?php echo $data['price']; ?></td>
-                                  <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
-                                  <td><input class="aa-cart-quantity" type="number" name="quantity" value="<?php echo $data['quantity']?>" min="1"> </td>
+                                  <form action="" method="POST">
+                                    <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+                                    <td><input class="aa-cart-quantity" type="number" name="quantity" value="<?php echo $data['quantity']?>" min="1"> <button type="submit" name="update" style="background-color: transparent; border:0px;"><img src="../admin/resources/images/icons/pencil.png" alt="Edit" style="width: 20px; height: 20px;"  /></button>
+                                  </form>
                                   <td>$<?php echo ($data['quantity']* $data['price']); ?></td>
                                 </tr>
                               <?php
@@ -92,7 +95,7 @@ if(isset($_POST['update'])){
                             <input class="aa-coupon-code" type="text" placeholder="Coupon">
                             <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
                           </div> -->
-                          <input class="aa-cart-view-btn" type="submit" name="update" value="Update Cart">
+                          <!-- <input class="aa-cart-view-btn" type="submit" name="update" value="Update Cart"> -->
                         </td>
                       </tr>
                       </tbody>
@@ -116,6 +119,18 @@ if(isset($_POST['update'])){
                </table>
                <a href="checkout.php" class="aa-cart-view-btn">Proced to Checkout</a>
              </div>
+             <script>
+               function deleteCart(id){
+                console.log(id);
+                $.ajax({
+                  url : "ajax.php",
+                  method : "POST",
+                  data : {id: id, action: "deletecart"}
+                }).done(function(msg){
+                  $(".cart-view-table").html(msg);
+                });
+               }
+             </script>
            </div>
          </div>
        </div>
