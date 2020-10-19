@@ -1,7 +1,4 @@
-<?php 
-
-
-include('header.php'); 
+<?php  
 include('../admin/config.php'); 
 
 if (isset($_POST['update'])) {
@@ -25,6 +22,8 @@ if (isset($_POST['update'])) {
         }
     }
 }
+
+include('header.php');
 ?>
  
   <!-- catg header banner section -->
@@ -124,9 +123,17 @@ if (isset($_POST['update'])) {
                 $.ajax({
                   url : "ajax.php",
                   method : "POST",
-                  data : {id: id, action: "deletecart"}
+                  data : {id: id, action: "deletecart"},
+                  dataType : "json"
                 }).done(function(msg){
-                  $(".cart-view-table").html(msg);
+                  var i;
+                  for(i= 0; i<msg['arr'].length;i++){
+                    if(i==0){
+                      $(".cart-view-table").html(msg['arr'][0]);
+                    }else{
+                      $(".aa-cartbox").html(msg['arr'][1]);
+                    }
+                  }
                 });
                }
              </script>

@@ -164,7 +164,7 @@ include('../admin/config.php');
                                 <h4><a href="#"><?php echo $data['name']; ?></a></h4>
                                 <p><?php echo $data['quantity']; ?> x $<?php echo $data['price']; ?></p>
                               </div>
-                              <a class="aa-remove-product" href="#" style="display: none;"><span class="fa fa-times"></span></a>
+                              <a class="remove" href="#" onclick = "deletecart(<?php echo $data['id']; ?>)"><span class="fa fa-times"></span></a>
                             </li>
 
                             <?php
@@ -186,6 +186,26 @@ include('../admin/config.php');
                   <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.php">Checkout</a>
                 </div>
               </div>
+              <script>
+                function deletecart(id){
+                  console.log(id);
+                  $.ajax({
+                    url : "ajax.php",
+                    method : "POST",
+                    data : {id: id, action: "deletecart"},
+                    dataType : "json"
+                  }).done(function(msg){
+                    var i;
+                    for(i= 0; i<msg['arr'].length;i++){
+                      if(i==0){
+                        $(".cart-view-table").html(msg['arr'][0]);
+                      }else{
+                        $(".aa-cartbox").html(msg['arr'][1]);
+                      }
+                    }
+                  });
+                }
+              </script>
               <!-- / cart box -->
               <!-- search box -->
               <div class="aa-search-box">

@@ -2,31 +2,31 @@
 include('../admin/config.php');
 $action = $_POST['action'];
 
-if($action == 'product'){
-  $html1 ='';
-  $id = $_POST['id'];
-  $select = "SELECT * FROM products WHERE id = '".$id."'";
-  $run = mysqli_query($conn, $select);
-  if(mysqli_num_rows($run)>0){
-    $data = mysqli_fetch_assoc($run);
-    $image = $data['image'];
-    $name = $data['name'];
-    $price = $data['price'];
-    $long_description = $data['long_description'];
-    $short_description = $data['short_description'];
+if ($action == 'product') {
+    $html1 ='';
+    $id = $_POST['id'];
+    $select = "SELECT * FROM products WHERE id = '".$id."'";
+    $run = mysqli_query($conn, $select);
+    if (mysqli_num_rows($run)>0) {
+        $data = mysqli_fetch_assoc($run);
+        $image = $data['image'];
+        $name = $data['name'];
+        $price = $data['price'];
+        $long_description = $data['long_description'];
+        $short_description = $data['short_description'];
 
 
-    $category_id = $data['category_id'];
-    $categ='';
-    $cat = "SELECT * FROM categories WHERE category_id ='".$category_id."'";
-    $cat_run = mysqli_query($conn, $cat);
-    $rows = mysqli_num_rows($cat_run);
-    if($rows>0){
-        $category = mysqli_fetch_assoc($cat_run);
-        $categ = $category['name'];
-    }
+        $category_id = $data['category_id'];
+        $categ='';
+        $cat = "SELECT * FROM categories WHERE category_id ='".$category_id."'";
+        $cat_run = mysqli_query($conn, $cat);
+        $rows = mysqli_num_rows($cat_run);
+        if ($rows>0) {
+            $category = mysqli_fetch_assoc($cat_run);
+            $categ = $category['name'];
+        }
 
-    $html1 .= '
+        $html1 .= '
                 <div class="modal-dialog">
                   <div class="modal-content">                      
                     <div class="modal-body">
@@ -103,62 +103,68 @@ if($action == 'product'){
                       </div>
                     </div>                        
                   </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-
-';
-  }
-  echo $html1;
-}
-elseif($action == 'category'){
-  $id = $_POST['id'];
-  $html2 ='';
-  $select = "SELECT * FROM products WHERE category_id = '".$id."'";
-  $run = mysqli_query($conn, $select);
-  if(mysqli_num_rows($run)>0){
-    while($data = mysqli_fetch_assoc($run)){
-      $id = $data['id'];
-      $image = $data['image'];
-      $name = $data['name'];
-      $price = $data['price'];
-      $long_description = $data['long_description'];
-      $short_description = $data['short_description'];
-
-
-      $category_id = $data['category_id'];
-      $categ='';
-      $cat = "SELECT * FROM categories WHERE category_id ='".$category_id."'";
-      $cat_run = mysqli_query($conn, $cat);
-      $rows = mysqli_num_rows($cat_run);
-      if($rows>0){
-          $category = mysqli_fetch_assoc($cat_run);
-          $categ = $category['name'];
-      }
-
-      $html2 .= '
-                  <li>
-                    <figure>
-                      <a class="aa-product-img" href="product-detail.php?id='.$id.'"><img src="../admin/resources/uploads/'.$image.'" alt="" width="265" height="300"></a>
-                      <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
-                      <figcaption>
-                        <h4 class="aa-product-title"><a href="#">'.$name.'</a></h4>
-                        <span class="aa-product-price">$'.$price.'.00</span>
-                        <p class="aa-product-descrip">'.$short_description.'</p>
-                      </figcaption>
-                    </figure>                         
-                    <div class="aa-product-hvr-content">
-                      <!-- <a href="#" data-toggle="tooltip" data-placement="top" title="Add to Wishlist"><span class="fa fa-heart-o"></span></a>
-                      <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span class="fa fa-exchange"></span></a> -->
-                      <a href="#" onclick="view('.$id.')" data-toggle2="tooltip" data-placement="top" title="Quick View" data-toggle="modal" data-target="#quick-view-modal" ><span class="fa fa-search"></span></a>                            
-                    </div>
-                    <!-- product badge -->
-                    <!-- <span class="aa-badge aa-sale" href="#">SALE!</span> -->
-                  </li>';
+                </div><!-- /.modal-dialog -->';
     }
-  }
-  echo $html2;
+    echo $html1;
 }
 
-elseif($action == 'tag'){
+
+//fatching data category wise
+
+
+elseif ($action == 'category') {
+    $id = $_POST['id'];
+    $html2 ='';
+    $select = "SELECT * FROM products WHERE category_id = '".$id."'";
+    $run = mysqli_query($conn, $select);
+    if (mysqli_num_rows($run)>0) {
+        while ($data = mysqli_fetch_assoc($run)) {
+            $id = $data['id'];
+            $image = $data['image'];
+            $name = $data['name'];
+            $price = $data['price'];
+            $long_description = $data['long_description'];
+            $short_description = $data['short_description'];
+
+
+            $category_id = $data['category_id'];
+            $categ='';
+            $cat = "SELECT * FROM categories WHERE category_id ='".$category_id."'";
+            $cat_run = mysqli_query($conn, $cat);
+            $rows = mysqli_num_rows($cat_run);
+            if ($rows>0) {
+                $category = mysqli_fetch_assoc($cat_run);
+                $categ = $category['name'];
+            }
+
+              $html2 .= '<li>
+                          <figure>
+                            <a class="aa-product-img" href="product-detail.php?id='.$id.'"><img src="../admin/resources/uploads/'.$image.'" alt="" width="265" height="300"></a>
+                            <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                            <figcaption>
+                              <h4 class="aa-product-title"><a href="#">'.$name.'</a></h4>
+                              <span class="aa-product-price">$'.$price.'.00</span>
+                              <p class="aa-product-descrip">'.$short_description.'</p>
+                            </figcaption>
+                          </figure>                         
+                          <div class="aa-product-hvr-content">
+                            <!-- <a href="#" data-toggle="tooltip" data-placement="top" title="Add to Wishlist"><span class="fa fa-heart-o"></span></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span class="fa fa-exchange"></span></a> -->
+                            <a href="#" onclick="view('.$id.')" data-toggle2="tooltip" data-placement="top" title="Quick View" data-toggle="modal" data-target="#quick-view-modal" ><span class="fa fa-search"></span></a>                            
+                          </div>
+                          <!-- product badge -->
+                          <!-- <span class="aa-badge aa-sale" href="#">SALE!</span> -->
+                        </li>';
+      }
+    }
+    echo $html2;
+}
+
+
+//fatching data tag wise
+
+
+elseif ($action == 'tag') {
   $id = $_POST['id'];
   $html3 ='';
   $select = "SELECT * FROM products_tags WHERE tag_id = '".$id."'";
@@ -215,6 +221,9 @@ elseif($action == 'tag'){
 }
 
 
+//fatching data price wise
+
+
 elseif($action == 'price'){
   $html = '';
   $lprice = $_POST['lprice'];
@@ -264,6 +273,9 @@ elseif($action == 'price'){
   }
   echo $html;
 }
+
+
+//fatching data color wise
 
 
 elseif($action == 'color'){
@@ -323,6 +335,10 @@ elseif($action == 'color'){
   }
   echo $html5;
 }
+
+
+//codes for add to cart button
+
 
 elseif($action == 'addtoCart'){
   $allrows;
@@ -421,9 +437,14 @@ elseif($action == 'addtoCart'){
 }
 
 
-elseif($action == "deletecart"){
+//deleting cart items from the cart
+
+
+elseif ($action == "deletecart") {
   $id = $_POST['id'];
-  
+  $html = '';
+  $html2 = '';
+  $cart = array();
   $delete = "DELETE FROM cart WHERE id = '".$id."'";
   $run = mysqli_query($conn, $delete);
   if($run == true){
@@ -442,11 +463,19 @@ elseif($action == "deletecart"){
                       </tr>
                     </thead>
                     <tbody> ';
-
     $select = "SELECT * FROM cart";
     $qry = mysqli_query($conn, $select);
     if(mysqli_num_rows($qry)>0){
       $total = 0;
+
+      $html2 = '<a class="aa-cart-link" href="cart.php">
+                    <span class="fa fa-shopping-basket"></span>
+                    <span class="aa-cart-title">SHOPPING CART</span>
+                    <span class="aa-cart-notify">'. mysqli_num_rows($qry) .'</span>
+                  </a>
+                  <div class="aa-cartbox-summary">
+                    <ul>';
+
       while($data = mysqli_fetch_assoc($qry)){
         $total = $total + ($data['price'] * $data['quantity']);
         $html .= ' <tr>
@@ -461,21 +490,30 @@ elseif($action == "deletecart"){
                     <td>$'.$data["quantity"]*$data["price"].'</td>
                   </tr> ';
 
+        $html2 .='<li>
+                    <a class="aa-cartbox-img" href="#"><img src="../admin/resources/uploads/'.$data["image"].'" alt="img"></a>
+                    <div class="aa-cartbox-info">
+                      <h4><a href="#">'.$data["name"].'</a></h4>
+                      <p>'.$data["quantity"].' x $'.$data["price"].'</p>
+                    </div>
+                    <a class="remove" href="#" onclick = "deleteCart('.$data["id"].')"><span class="fa fa-times"></span></a>
+                  </li>';
+
       }
 
-      $html .= ' <tr>
-                        <td colspan="6" class="aa-cart-view-bottom">
-                          <!-- <div class="aa-cart-coupon">
-                            <input class="aa-coupon-code" type="text" placeholder="Coupon">
-                            <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
-                          </div> -->
-                          <!-- <input class="aa-cart-view-btn" type="submit" name="update" value="Update Cart"> -->
-                        </td>
-                      </tr>
-                      </tbody>
+        $html .= ' <tr>
+                      <td colspan="6" class="aa-cart-view-bottom">
+                        <!-- <div class="aa-cart-coupon">
+                          <input class="aa-coupon-code" type="text" placeholder="Coupon">
+                          <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
+                        </div> -->
+                        <!-- <input class="aa-cart-view-btn" type="submit" name="update" value="Update Cart"> -->
+                      </td>
+                    </tr>
+                    </tbody>
                   </table>
                 </div>
-             </form>
+              </form>
              <!-- Cart Total view -->
              <div class="cart-view-total">
                <h4>Cart Totals</h4>
@@ -493,9 +531,21 @@ elseif($action == "deletecart"){
                </table>
                <a href="checkout.php" class="aa-cart-view-btn">Proced to Checkout</a>
              </div> ';
+
+        $html2 .= '<li>
+                      <span class="aa-cartbox-total-title">
+                        Total
+                      </span>
+                      <span class="aa-cartbox-total-price">'.$total.'</span>
+                    </li>    
+                  </ul>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.php">Checkout</a>
+                </div>';
     }
-    echo $html;
+    $cart[0] = $html;
+    $cart[1] = $html2;
   }
+  echo json_encode(array('arr' => $cart));
 }
 ?>
                                      
