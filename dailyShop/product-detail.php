@@ -1,7 +1,6 @@
-<?php include('header.php'); 
-  include('../admin/config.php');
-
-  
+<?php 
+include('header.php'); 
+include('../admin/config.php');
 ?>
 
   <!-- catg header banner section -->
@@ -27,12 +26,12 @@
     <div class="container">
       <div class="row">
         <?php 
-          $id = $_GET['id'];
-          $qry = "SELECT * FROM products WHERE id = '".$id."'";
-          $run = mysqli_query($conn, $qry);
-          if(mysqli_num_rows($run)>0){
+        $id = $_GET['id'];
+        $qry = "SELECT * FROM products WHERE id = '".$id."'";
+        $run = mysqli_query($conn, $qry);
+        if (mysqli_num_rows($run)>0) {
             $data = mysqli_fetch_assoc($run);
-        ?>
+            ?>
         <div class="col-md-12">
           <div class="aa-product-details-area">
             <div class="aa-product-details-content">
@@ -76,36 +75,35 @@
                     </div> -->
                     <h4>Color</h4>
                     <div class="aa-color-tag">
-                      <?php
-                        $colors = "SELECT * FROM colors WHERE product_id = '".$id."'";
-                        $run = mysqli_query($conn, $colors);
-                        if(mysqli_num_rows($run)>0){
-                          while($color = mysqli_fetch_assoc($run)){
-                              ?><a href="#" class='aa-color-<?php echo lcfirst($color["color"]); ?>'></a><?php
-                          }
-                        }
-
-                      ?>                     
+                    <?php
+                    $colors = "SELECT * FROM colors WHERE product_id = '".$id."'";
+                    $run = mysqli_query($conn, $colors);
+                    if (mysqli_num_rows($run)>0) {
+                        while ($color = mysqli_fetch_assoc($run)) {
+                            ?><a href="#" class='aa-color-<?php echo lcfirst($color["color"]); ?>'></a><?php
+                      }
+                    }
+                    ?>                     
                     </div>
                     <div class="aa-prod-quantity">
                       <!-- <form action=""> -->
-                        <!-- <select id="" name="quantity">
+                        <select id="quantity" name="quantity">
                           <option value="1" selected="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
-                        </select> -->
+                        </select>
                       <!-- </form> -->
                       <p class="aa-prod-category">
                         Category: <?php
-                          $categories = "SELECT * FROM categories WHERE category_id = '".$data['category_id']."'";
-                          $run = mysqli_query($conn, $categories);
-                          if(mysqli_num_rows($run)>0){
-                            while($category = mysqli_fetch_assoc($run)){
-                              echo '<a href="#"><strong>'.ucfirst($category['name']).'</strong> </a>';
-                            }
+                        $categories = "SELECT * FROM categories WHERE category_id = '".$data['category_id']."'";
+                        $run = mysqli_query($conn, $categories);
+                        if (mysqli_num_rows($run)>0) {
+                            while ($category = mysqli_fetch_assoc($run)) {
+                                echo '<a href="#"><strong>'.ucfirst($category['name']).'</strong> </a>';
                           }
+                        }
                         ?>
                       </p>
                     </div>
@@ -117,11 +115,11 @@
                     </div>
                     <script>
                       function addCart(id){
-                        
+                        var a = $("#quantity").val();
                         $.ajax({
                           url : 'ajax.php',
                           method: 'POST',
-                          data : {id: id, action: 'addtoCart'}
+                          data : {id: id, quantity: a, action: 'addtoCart'}
                         }).done(function(msg){
                           $(".aa-cartbox").html(msg); 
                         });

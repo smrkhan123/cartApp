@@ -143,7 +143,7 @@ include('../admin/config.php');
                 $select = "SELECT * FROM cart";
                 $run = mysqli_query($conn, $select);
                 $rows = mysqli_num_rows($run);
-              ?>
+                ?>
               <div class="aa-cartbox">
                 <a class="aa-cart-link" href="cart.php">
                   <span class="fa fa-shopping-basket"></span>
@@ -153,10 +153,10 @@ include('../admin/config.php');
                 <div class="aa-cartbox-summary">
                   <ul>
                     <?php 
-                      if($rows>0){
+                    if ($rows>0) {
                         $total = 0;
-                        while($data = mysqli_fetch_assoc($run)){
-                          ?>
+                        while ($data = mysqli_fetch_assoc($run)) {
+                            ?>
                           
                              <li>
                               <a class="aa-cartbox-img" href="#"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="img"></a>
@@ -167,8 +167,8 @@ include('../admin/config.php');
                               <a class="aa-remove-product" href="#" style="display: none;"><span class="fa fa-times"></span></a>
                             </li>
 
-                          <?php
-                          $total = $total + ($data['quantity']*$data['price']);
+                            <?php
+                            $total = $total + ($data['quantity']*$data['price']);
                         }
                         ?>
                           <li>

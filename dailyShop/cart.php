@@ -4,27 +4,26 @@
 include('header.php'); 
 include('../admin/config.php'); 
 
-if(isset($_POST['update'])){
-  $id = $_POST['id'];
-  $quantity = $_POST['quantity'];
-  $select = "SELECT * FROM cart";
-  $runCheck = mysqli_query($conn, $select);
-  if(mysqli_num_rows($runCheck)>0){
-    while($cartRow = mysqli_fetch_assoc($runCheck)){
-      if($cartRow['id'] == $id){
-        $pid = $cartRow['product_id'];
-        $name = $cartRow['name'];
-        $price = $cartRow['price'];
-        $image = $cartRow['image'];
-        $insertItem = "UPDATE cart SET `product_id` = '".$pid."', `name` = '".$name."', `price` = '".$price."', `image` = '".$image."', `quantity` = '".$quantity."' WHERE id = '".$id."'";
-        $qry = mysqli_query($conn, $insertItem);
-        if(!$qry){
-          echo "Some error occured! ".mysqli_error($conn);
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $quantity = $_POST['quantity'];
+    $select = "SELECT * FROM cart";
+    $runCheck = mysqli_query($conn, $select);
+    if (mysqli_num_rows($runCheck)>0) {
+        while ($cartRow = mysqli_fetch_assoc($runCheck)) {
+            if ($cartRow['id'] == $id) {
+                $pid = $cartRow['product_id'];
+                $name = $cartRow['name'];
+                $price = $cartRow['price'];
+                $image = $cartRow['image'];
+                $insertItem = "UPDATE cart SET `product_id` = '".$pid."', `name` = '".$name."', `price` = '".$price."', `image` = '".$image."', `quantity` = '".$quantity."' WHERE id = '".$id."'";
+                $qry = mysqli_query($conn, $insertItem);
+                if (!$qry) {
+                    echo "Some error occured! ".mysqli_error($conn);
+                }
+            }
         }
-      }
-            
     }
-  }
 }
 ?>
  
@@ -66,14 +65,14 @@ if(isset($_POST['update'])){
                       </tr>
                     </thead>
                     <tbody class="ajax_value">
-                      <?php 
-                          $total = 0;
-                          $select = "SELECT * FROM cart";
-                          $run = mysqli_query($conn, $select);
-                          if(mysqli_num_rows($run)>0){
-                            while($data = mysqli_fetch_assoc($run)){
-                              $total = $total + ($data['price'] * $data['quantity']);
-                              ?>
+                        <?php 
+                        $total = 0;
+                        $select = "SELECT * FROM cart";
+                        $run = mysqli_query($conn, $select);
+                        if (mysqli_num_rows($run)>0) {
+                            while ($data = mysqli_fetch_assoc($run)) {
+                                $total = $total + ($data['price'] * $data['quantity']);
+                                ?>
                                 <tr>
                                   <td><a class="remove" href="#" onclick = "deleteCart(<?php echo $data['id']; ?>)"><fa class="fa fa-close"></fa></a></td>
                                   <td><a href="#"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="img"></a></td>

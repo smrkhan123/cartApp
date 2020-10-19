@@ -294,20 +294,20 @@ include('../admin/config.php');
                       </thead>
                       <tbody>
                         <?php 
-                          $total = 0;
-                          $select = "SELECT * FROM cart";
-                          $run = mysqli_query($conn, $select);
-                          if(mysqli_num_rows($run)>0){
-                            while($data = mysqli_fetch_assoc($run)){
-                              $total = $total + ($data['price'] * $data['quantity']);
-                              ?>
+                        $total = 0;
+                        $select = "SELECT * FROM cart";
+                        $run = mysqli_query($conn, $select);
+                        if (mysqli_num_rows($run)>0) {
+                            while ($data = mysqli_fetch_assoc($run)) {
+                                $total = $total + ($data['price'] * $data['quantity']);
+                                ?>
                                 <tr>
                                   <td><?php echo $data['name']; ?> <strong> x  <?php echo $data['quantity']; ?></strong></td>
                                   <td>$<?php echo $data['price']; ?></td>
                                 </tr>
-                              <?php
+                                <?php
                             }
-                          }
+                        }
                         ?>
                       </tbody>
                       <tfoot>

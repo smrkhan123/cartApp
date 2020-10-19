@@ -4,19 +4,19 @@ $action = $_POST['action'];
 
 if($action == 'product'){
   $html1 ='';
-	$id = $_POST['id'];
-	$select = "SELECT * FROM products WHERE id = '".$id."'";
-	$run = mysqli_query($conn, $select);
-	if(mysqli_num_rows($run)>0){
-		$data = mysqli_fetch_assoc($run);
-		$image = $data['image'];
-		$name = $data['name'];
-		$price = $data['price'];
+  $id = $_POST['id'];
+  $select = "SELECT * FROM products WHERE id = '".$id."'";
+  $run = mysqli_query($conn, $select);
+  if(mysqli_num_rows($run)>0){
+    $data = mysqli_fetch_assoc($run);
+    $image = $data['image'];
+    $name = $data['name'];
+    $price = $data['price'];
     $long_description = $data['long_description'];
     $short_description = $data['short_description'];
 
 
-		$category_id = $data['category_id'];
+    $category_id = $data['category_id'];
     $categ='';
     $cat = "SELECT * FROM categories WHERE category_id ='".$category_id."'";
     $cat_run = mysqli_query($conn, $cat);
@@ -26,7 +26,7 @@ if($action == 'product'){
         $categ = $category['name'];
     }
 
-		$html1 .= '
+    $html1 .= '
                 <div class="modal-dialog">
                   <div class="modal-content">                      
                     <div class="modal-body">
@@ -81,16 +81,15 @@ if($action == 'product'){
                               <a href="#">XL</a>
                             </div>-->
                             <div class="aa-prod-quantity">
-                              <!--<form action="">
-                                <select name="" id="">
-                                  <option value="0" selected="1">1</option>
-                                  <option value="1">2</option>
-                                  <option value="2">3</option>
-                                  <option value="3">4</option>
-                                  <option value="4">5</option>
-                                  <option value="5">6</option>
+                              <!--<form action="">-->
+                                <select id="quantity" name="quantity">
+                                  <option value="1" selected="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
                                 </select>
-                              </form>-->
+                                <!--</form>-->
                               <p class="aa-prod-category">
                                 Category: <a href="#"><strong>'.ucfirst($categ).'</strong></a>
                               </p>
@@ -107,7 +106,7 @@ if($action == 'product'){
                 </div><!-- /.modal-dialog -->
 
 ';
-	}
+  }
   echo $html1;
 }
 elseif($action == 'category'){
@@ -328,6 +327,7 @@ elseif($action == 'color'){
 elseif($action == 'addtoCart'){
   $allrows;
   $id = $_POST['id'];
+  $quantity = isset($_POST['quantity'])?$_POST['quantity']:1;
   $select = "SELECT * FROM products WHERE id = '".$id."'";
   $run = mysqli_query($conn, $select);
   if(mysqli_num_rows($run)>0){
@@ -347,7 +347,7 @@ elseif($action == 'addtoCart'){
           $name = $cartRow['name'];
           $price = $cartRow['price'];
           $image = $cartRow['image'];
-          $quantity = $cartRow['quantity']+1;
+          $quantity = isset($_POST['quantity'])?$_POST['quantity']+$cartRow['quantity']:$cartRow['quantity']+1;
           $insertItem = "UPDATE cart SET `product_id` = '".$pid."', `name` = '".$name."', `price` = '".$price."', `image` = '".$image."', `quantity` = '".$quantity."' WHERE product_id = '".$pid."'";
             $qry = mysqli_query($conn, $insertItem);
             if($qry == true){
@@ -359,7 +359,7 @@ elseif($action == 'addtoCart'){
         }
       }
       if($a == 0){
-        $insertItem = "INSERT INTO cart(`product_id`,`name`,`price`,`image`,`quantity`) VALUES('".$id."', '".$pname."', '".$pprice."', '".$pimage."', 1) ";
+        $insertItem = "INSERT INTO cart(`product_id`,`name`,`price`,`image`,`quantity`) VALUES('".$id."', '".$pname."', '".$pprice."', '".$pimage."', '".$quantity."') ";
             $qry = mysqli_query($conn, $insertItem);
             if($qry == true){
               $cart = "SELECT * FROM cart";
@@ -369,7 +369,7 @@ elseif($action == 'addtoCart'){
       }
     }
     elseif(mysqli_num_rows($runCheck)==0){
-      $insertItem = "INSERT INTO cart(`product_id`, `name`, `price`, `image`, `quantity`) VALUES('".$id."', '".$pname."', '".$pprice."', '".$pimage."', 1)";
+      $insertItem = "INSERT INTO cart(`product_id`, `name`, `price`, `image`, `quantity`) VALUES('".$id."', '".$pname."', '".$pprice."', '".$pimage."', '".$quantity."')";
             $qry = mysqli_query($conn, $insertItem);
             if($qry == true){
               $cart = "SELECT * FROM cart";
@@ -423,6 +423,7 @@ elseif($action == 'addtoCart'){
 
 elseif($action == "deletecart"){
   $id = $_POST['id'];
+  
   $delete = "DELETE FROM cart WHERE id = '".$id."'";
   $run = mysqli_query($conn, $delete);
   if($run == true){

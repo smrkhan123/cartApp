@@ -1,19 +1,19 @@
 <?php 
-  include('header.php');
-  include('../admin/config.php');
-  $single_page_results = 9;
-  $sql='SELECT * FROM products';
-  $result = mysqli_query($conn, $sql);
-  $number_of_results = mysqli_num_rows($result);
-  $number_of_pages = ceil($number_of_results/$single_page_results);
-  if (!isset($_GET['page'])) {
+include('header.php');
+include('../admin/config.php');
+$single_page_results = 9;
+$sql='SELECT * FROM products';
+$result = mysqli_query($conn, $sql);
+$number_of_results = mysqli_num_rows($result);
+$number_of_pages = ceil($number_of_results/$single_page_results);
+if (!isset($_GET['page'])) {
     $page = 1;
-  } else {
+} else {
     $page = $_GET['page'];
-  }
+}
 
-  $this_page_first_result = ($page-1)*$single_page_results;
-  ?> 
+$this_page_first_result = ($page-1)*$single_page_results;
+?> 
  
   <!-- catg header banner section -->
   <!-- <section id="aa-catg-head-banner">
@@ -67,42 +67,47 @@
               <ul class="aa-product-catg">
                 <!-- start single product item -->
                 <?php 
-                    $select = 'SELECT * FROM products LIMIT ' . $this_page_first_result . ',' .  $single_page_results;
-                    $run = mysqli_query($conn, $select);
-                    if(mysqli_num_rows($run)>0){
-                      while($data = mysqli_fetch_assoc($run)){ ?>
-                        <li>
-                          <figure>
-                            <a class="aa-product-img" href="product-detail.php?id=<?php echo $data['id']; ?>"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="" width="265" height="300"></a>
-                            <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
-                            <figcaption>
-                              <h4 class="aa-product-title"><a href="#"><?php echo $data['name']; ?></a></h4>
-                              <span class="aa-product-price">$<?php echo $data['price']; ?>.00</span>
-                              <p class="aa-product-descrip"><?php echo $data['long_description']; ?></p>
-                            </figcaption>
-                          </figure>                         
-                          <div class="aa-product-hvr-content">
-                            <!-- <a href="#" data-toggle="tooltip" data-placement="top" title="Add to Wishlist"><span class="fa fa-heart-o"></span></a>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span class="fa fa-exchange"></span></a> -->
-                            <a href="#" onclick="view(<?php echo $data['id']; ?>)" data-toggle2="tooltip" data-placement="top" title="Quick View" data-toggle="modal" data-target="#quick-view-modal" ><span class="fa fa-search"></span></a>                            
-                          </div>
-                          <!-- product badge -->
-                          <!-- <span class="aa-badge aa-sale" href="#">SALE!</span> -->
-                        </li>
-                <?php }
+                $select = 'SELECT * FROM products LIMIT ' . $this_page_first_result . ',' .  $single_page_results;
+                $run = mysqli_query($conn, $select);
+                if (mysqli_num_rows($run)>0) {
+                    while ($data = mysqli_fetch_assoc($run)) { ?>
+                      <li>
+                        <figure>
+                          <a class="aa-product-img" href="product-detail.php?id=<?php echo $data['id']; ?>"><img src="../admin/resources/uploads/<?php echo $data['image']; ?>" alt="" width="265" height="300"></a>
+                          <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                          <figcaption>
+                            <h4 class="aa-product-title"><a href="#"><?php echo $data['name']; ?></a></h4>
+                            <span class="aa-product-price">$<?php echo $data['price']; ?>.00</span>
+                            <p class="aa-product-descrip"><?php echo $data['long_description']; ?></p>
+                          </figcaption>
+                        </figure>                         
+                        <div class="aa-product-hvr-content">
+                          <!-- <a href="#" data-toggle="tooltip" data-placement="top" title="Add to Wishlist"><span class="fa fa-heart-o"></span></a>
+                          <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span class="fa fa-exchange"></span></a> -->
+                          <a href="#" onclick="view(<?php echo $data['id']; ?>)" data-toggle2="tooltip" data-placement="top" title="Quick View" data-toggle="modal" data-target="#quick-view-modal" ><span class="fa fa-search"></span></a>                            
+                        </div>
+                        <!-- product badge -->
+                        <!-- <span class="aa-badge aa-sale" href="#">SALE!</span> -->
+                      </li>
+                        <?php 
                     }
+                }
                 ?>                                         
               </ul>
               <script>
                 function addCart(id){
-                  
+                  if($("#quantity").val()){
+                    var a = $("#quantity").val();
+                  }
+                  else{
+                    var a = 1;
+                  }
                   $.ajax({
                     url : 'ajax.php',
                     method: 'POST',
-                    data : {id: id, action: 'addtoCart'},
-                    dataType : "json"
+                    data : {id: id, quantity: a, action: 'addtoCart'},
                   }).done(function(msg){
-                    $(".aa-cart-notify").html(msg); 
+                    $(".aa-cartbox").html(msg); 
                   });
                 }
               </script>
@@ -127,7 +132,7 @@
               <nav>
                 <ul class="pagination">
                   <li>
-                    <?php if($page > 1 ): ?>
+                    <?php if($page > 1 ) : ?>
                       <a href="product.php?page=<?php echo $page-1; ?>" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                       </a>
@@ -135,23 +140,23 @@
                   </li>
                   <?php
                     for ($page=1;$page<=$number_of_pages;$page++) {
-                      echo '<li><a href="product.php?page=' . $page . '">' . $page . '</a><li> ';
+                        echo '<li><a href="product.php?page=' . $page . '">' . $page . '</a><li> ';
                     }
-                  ?>
+                    ?>
                   <li>
-                    <?php if(!isset($_GET['page'])) { ?>
+                    <?php if (!isset($_GET['page'])) { ?>
                             <a href="product.php?page=<?php echo 2; ?>" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                             </a>
                         <?php
 
-                      }elseif($_GET['page'] < $number_of_pages){
+                    } elseif ($_GET['page'] < $number_of_pages) {
                         ?>
                             <a href="product.php?page=<?php echo $_GET['page']+1; ?>" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                             </a>
                         <?php
-                      } ?>
+                    } ?>
                   </li>
                 </ul>
               </nav>
@@ -165,19 +170,19 @@
               <h3>Category</h3>
               <ul class="aa-catg-nav">
                 <?php 
-                  $cat = "SELECT * FROM categories";
-                  $run = mysqli_query($conn, $cat);
-                  if(mysqli_num_rows($run)){
-                    while($data = mysqli_fetch_assoc($run)){
-                      ?>
-                        <li>
-                          <a href="#" onclick="category(<?php echo ($data['category_id']); ?>)">
-                            <?php echo ucfirst($data['name']); ?>
-                          </a>
-                        </li>
-                      <?php
+                $cat = "SELECT * FROM categories";
+                $run = mysqli_query($conn, $cat);
+                if (mysqli_num_rows($run)) {
+                    while ($data = mysqli_fetch_assoc($run)) {
+                        ?>
+                      <li>
+                        <a href="#" onclick="category(<?php echo ($data['category_id']); ?>)">
+                          <?php echo ucfirst($data['name']); ?>
+                        </a>
+                      </li>
+                        <?php
                     }
-                  }
+                }
                 ?>
               </ul>
               <script>
@@ -198,17 +203,17 @@
               <h3>Tags</h3>
               <div class="tag-cloud">
                 <?php 
-                  $tags = "SELECT * FROM tags";
-                  $run = mysqli_query($conn, $tags);
-                  if(mysqli_num_rows($run)){
-                    while($data = mysqli_fetch_assoc($run)){
-                      ?>
-                        <a href="#" onclick="tag(<?php echo $data['id']; ?>)">
-                          <?php echo ucfirst($data['name']); ?>
-                        </a>
-                      <?php
+                $tags = "SELECT * FROM tags";
+                $run = mysqli_query($conn, $tags);
+                if (mysqli_num_rows($run)) {
+                    while ($data = mysqli_fetch_assoc($run)) {
+                        ?>
+                      <a href="#" onclick="tag(<?php echo $data['id']; ?>)">
+                        <?php echo ucfirst($data['name']); ?>
+                      </a>
+                        <?php
                     }
-                  }
+                }
                 ?>
               </div>
               <script>
@@ -232,8 +237,8 @@
                <!-- <form> -->
                   <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
                   </div>
-                  <span id="skip-value-lower" class="example-val">30.00</span>
-                 <span id="skip-value-upper" class="example-val">5000.00</span>
+                  <span id="skip-value-lower" class="example-val">200.00</span>
+                 <span id="skip-value-upper" class="example-val">700.00</span>
                  <button class="aa-filter-btn" onclick="price();">Filter</button>
                <!--   -->
               </div>              
@@ -257,17 +262,15 @@
               <h3>Shop By Color</h3>
               <div class="aa-color-tag">
                 <?php 
-                  $colors = "SELECT * FROM allcolors";
-                  $run = mysqli_query($conn, $colors);
-                  if(mysqli_num_rows($run)){
-                    while($data = mysqli_fetch_assoc($run)){
-                      ?>
-                      <a class="aa-color-<?php echo lcfirst($data['color']); ?>" href="#" onclick="clr(<?php echo $data['id']; ?>)" data-id="<?php echo $data['id']; ?>">
-                        
-                      </a>
-                      <?php
+                $colors = "SELECT * FROM allcolors";
+                $run = mysqli_query($conn, $colors);
+                if (mysqli_num_rows($run)) {
+                    while ($data = mysqli_fetch_assoc($run)) {
+                        ?>
+                    <a class="aa-color-<?php echo lcfirst($data['color']); ?>" href="#" onclick="clr(<?php echo $data['id']; ?>)" data-id="<?php echo $data['id']; ?>"></a>
+                        <?php
                     }
-                  }
+                }
                 ?>
               </div>
               <script>
