@@ -384,7 +384,7 @@ if ($action == 'product') {
                         <h4><a href="#">'.$data["name"].'</a></h4>
                         <p>'.$data["quantity"].' x $'.$data["price"].'</p>
                       </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+                      <a class="aa-remove-product" href="#" onclick = "deletecart('.$data["id"].')"><span class="fa fa-times"></span></a>
                     </li>';
         }
         $html .= '<li>
@@ -454,7 +454,7 @@ if ($action == 'product') {
                               <h4><a href="#">'.$data["name"].'</a></h4>
                               <p>'.$data["quantity"].' x $'.$data["price"].'</p>
                             </div>
-                            <a class="remove" href="#" onclick = "deleteCart('.$data["id"].')"><span class="fa fa-times"></span></a>
+                            <a class="remove" href="#" onclick = "deletecart('.$data["id"].')"><span class="fa fa-times"></span></a>
                           </li>';
 
             }

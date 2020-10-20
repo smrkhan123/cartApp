@@ -1,6 +1,7 @@
 <?php 
-include('header.php'); 
+
 include('../admin/config.php');
+include('header.php'); 
 ?>
 
   <!-- catg header banner section -->
