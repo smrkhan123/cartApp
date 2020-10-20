@@ -1,6 +1,9 @@
 <?php 
 include('header.php');
 include('../admin/config.php');
+
+//code for pagination 
+
 $single_page_results = 9;
 $sql='SELECT * FROM products';
 $result = mysqli_query($conn, $sql);
