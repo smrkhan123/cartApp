@@ -132,7 +132,7 @@ if ($action == 'product') {
               $html2 .= '<li>
                           <figure>
                             <a class="aa-product-img" href="product-detail.php?id='.$id.'"><img src="../admin/resources/uploads/'.$image.'" alt="" width="265" height="300"></a>
-                            <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                            <a class="aa-add-card-btn"href="#" onclick="addCart('.$data["id"].')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                             <figcaption>
                               <h4 class="aa-product-title"><a href="#">'.$name.'</a></h4>
                               <span class="aa-product-price">$'.$price.'.00</span>
@@ -185,7 +185,7 @@ if ($action == 'product') {
                           <li>
                             <figure>
                               <a class="aa-product-img" href="product-detail.php?id='.$id.'"><img src="../admin/resources/uploads/'.$image.'" alt="" width="265" height="300"></a>
-                              <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                              <a class="aa-add-card-btn"href="#" onclick="addCart('.$data["id"].')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                               <figcaption>
                                 <h4 class="aa-product-title"><a href="#">'.$name.'</a></h4>
                                 <span class="aa-product-price">$'.$price.'.00</span>
@@ -234,7 +234,7 @@ if ($action == 'product') {
                         <li>
                           <figure>
                             <a class="aa-product-img" href="product-detail.php?id='.$id.'"><img src="../admin/resources/uploads/'.$image.'" alt="" width="265" height="300"></a>
-                            <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                            <a class="aa-add-card-btn"href="#" onclick="addCart('.$data["id"].')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                             <figcaption>
                               <h4 class="aa-product-title"><a href="#">'.$name.'</a></h4>
                               <span class="aa-product-price">$'.$price.'.00</span>
@@ -288,7 +288,7 @@ if ($action == 'product') {
                               <li>
                                 <figure>
                                   <a class="aa-product-img" href="product-detail.php?id='.$id.'"><img src="../admin/resources/uploads/'.$image.'" alt="" width="265" height="300"></a>
-                                  <a class="aa-add-card-btn"href="#" onclick="addCart(<?php echo $data['id']; ?>)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                                  <a class="aa-add-card-btn"href="#" onclick="addCart('.$data["id"].')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                   <figcaption>
                                     <h4 class="aa-product-title"><a href="#">'.$name.'</a></h4>
                                     <span class="aa-product-price">$'.$price.'.00</span>
